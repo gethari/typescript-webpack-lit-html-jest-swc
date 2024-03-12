@@ -1,4 +1,4 @@
-TypeScript Webpack lit-html Jest Test Demo
+TypeScript Webpack lit-html Jest + SWC Test Demo
 =======================================
 
 Write test for lit-html with jest.
@@ -11,19 +11,26 @@ npm run test
 ## Works fine with `ts-jest`
 
 ```
- test
-    ✓ is defined (3 ms)
+ PASS  src/sayHello.test.ts
+  test
+    ✓ is defined (48 ms)
+    ✓ should trigger willUpdate when properties change (23 ms)
 
 Test Suites: 1 passed, 1 total
-Tests:       1 passed, 1 total
+Tests:       2 passed, 2 total
 Snapshots:   0 total
-Time:        2.936 s
+Time:        2.926 s, estimated 4 s
 ```
 
-## SWC/Jest
+## Causing issue in SWC/Jest
 
 I wanted to use `swc/jest` to make the tests run more faster. So I followed the below steps
 
-1- npm i -D @swc/core @swc/jest
-2- Created `.swcrc` file
-3- Replace `ts-jest` with `swc/jest` in `jest.config.ts`
+- npm i -D @swc/core @swc/jest
+- Created `.swcrc` file
+- Replace `ts-jest` with `swc/jest` in `jest.config.ts`
+
+## To Reproduce
+- jo to `jest.config.js`
+- use `['@swc/jest']` instead of `ts-jest`
+- run `npm run test` tests will fail, because the `willUpdate()` method lifecycle is not getting triggered.
