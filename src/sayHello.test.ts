@@ -1,14 +1,9 @@
-import sayHello from "./sayHello";
-import {render} from "lit-html";
+import { MyElement } from './sayHello';
 
-beforeEach(() => {
-  render('', document.body);
-})
-
-describe('sayHello', () => {
-  it('says hello', () => {
-    render(sayHello('world'), document.body);
-    const component = document.querySelector('h1');
-    expect(component).toBeDefined();
-  })
-})
+describe('test', () => {
+  test('is defined', () => {
+    let el = document.createElement('my-element') as MyElement;
+    expect(el).toBeDefined();
+    expect(el).toBeInstanceOf(MyElement);
+  });
+});

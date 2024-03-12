@@ -1,13 +1,12 @@
 module.exports = {
     preset: 'ts-jest',
-    testEnvironment: 'jsdom',
+    testEnvironment: 'jest-environment-jsdom',
     transform: {
         // transform files with ts-jest
         "^.+\\.(js|ts)$": "ts-jest",
     },
     transformIgnorePatterns: [
-        // allow lit-html transformation
-        "node_modules/(?!lit-html)",
+        'node_modules/(?!(lit-html|lit-element|lit|@lit|@shoelace|@shoelace-style|chartjs-plugin-datalabels|chartjs-adapter-luxon)/)',
     ],
     globals: {
         "ts-jest": {
