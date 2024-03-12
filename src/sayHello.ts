@@ -1,5 +1,5 @@
-import { LitElement, css, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { LitElement, PropertyValues, css, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 
 /**
@@ -21,6 +21,11 @@ export class MyElement extends LitElement {
    */
   @property({ type: Number })
   count = 0
+
+  willUpdate(props: PropertyValues<this>) {
+    super.willUpdate(props);
+    console.error('will update called with props:', props);
+  }
 
   render() {
     return html`
