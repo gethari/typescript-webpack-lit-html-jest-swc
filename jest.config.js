@@ -5,7 +5,7 @@ module.exports = {
         // transform files with ts-jest
         "^.+\\.(js|ts)$": "ts-jest",
     },
-    // Un comment the below to see the error
+    // Un comment the below & comment above to see the error
     // transform: {
     //     // transform files with @swc/jest
     //     '^.+\\.(t|j)sx?$': ['@swc/jest'],

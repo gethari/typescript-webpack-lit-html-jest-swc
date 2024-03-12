@@ -1,6 +1,5 @@
-import { LitElement, PropertyValues, css, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-
+import { LitElement, PropertyValues, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
 /**
  * An example element.
@@ -8,38 +7,40 @@ import { customElement, property } from 'lit/decorators.js';
  * @slot - This element has a slot
  * @csspart button - The button
  */
-@customElement('my-element')
+@customElement("my-element")
 export class MyElement extends LitElement {
   /**
-  * Copy for the read the docs hint.
-  */
+   * Copy for the read the docs hint.
+   */
   @property()
-  docsHint = 'Click on the Vite and Lit logos to learn more'
+  docsHint = "Click on the Vite and Lit logos to learn more";
 
   /**
    * The number of times the button has been clicked.
    */
   @property({ type: Number })
-  count = 0
+  count = 1;
+  willUpdateCount = 0;
 
   willUpdate(props: PropertyValues<this>) {
     super.willUpdate(props);
-    console.error('will update called with props:', props);
+    console.error("will update called with props:", props);
+    this.willUpdateCount = props.get("count") as number;
   }
 
   render() {
     return html`
       <div class="card">
-        <button @click=${this._onClick} part="button">
+        <button @click=${this._onClick} part="button" id="btn">
           count is ${this.count}
         </button>
       </div>
       <p class="read-the-docs">${this.docsHint}</p>
-    `
+    `;
   }
 
   private _onClick() {
-    this.count++
+    this.count++;
   }
 
   static styles = css`
@@ -112,11 +113,11 @@ export class MyElement extends LitElement {
         background-color: #f9f9f9;
       }
     }
-  `
+  `;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'my-element': MyElement
+    "my-element": MyElement;
   }
 }

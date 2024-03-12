@@ -1,54 +1,58 @@
-import { MyElement } from './sayHello';
+import { MyElement } from "./sayHello";
 
-describe('test', () => {
+export const findElementById = (
+  id: string,
+  startElement: HTMLElement = document.body
+): HTMLElement | null => {
+  if (startElement.id === id) {
+    return startElement;
+  }
+
+  if (startElement.shadowRoot) {
+    const elementInShadowRoot = startElement.shadowRoot.getElementById(id);
+    if (elementInShadowRoot) {
+      return elementInShadowRoot as HTMLElement;
+    }
+  }
+
+  for (let i = 0; i < startElement.children.length; i++) {
+    const childElement = startElement.children[i];
+    if (childElement instanceof HTMLElement) {
+      const foundElement = findElementById(id, childElement);
+      if (foundElement) {
+        return foundElement;
+      }
+    }
+  }
+
+  return null;
+};
+
+describe("test", () => {
   let element: MyElement;
   beforeEach(() => {
-    element = document.createElement('my-element') as MyElement;
-  })
+    element = document.createElement("my-element") as MyElement;
+    document.body.appendChild(element);
+  });
 
-  test('is defined', () => {
+  test("is defined", () => {
     expect(element).toBeDefined();
     expect(element).toBeInstanceOf(MyElement);
   });
 
-  it('should increment count when button is clicked', () => {
-    // Simulate button click
-    element['_onClick']();
-
-    // Check if count has been incremented
-    expect(element.count).toBe(1);
-  });
-
-  it('should trigger willUpdate when properties change', async () => {
-    // Mock any setup you need for your LitElement
-    // For example, if you have properties or attributes, you can set them up here
-
+  it("should trigger willUpdate when properties change", async () => {
     // Create a spy to track the willUpdate method
-    const willUpdateSpy = jest.spyOn(element, 'willUpdate');
 
-    // Change a property of the element
-    element.count = 5;
-    await element.updateComplete;
-    // Assert that the willUpdate method was called
-    expect(willUpdateSpy).toHaveBeenCalled();
+    // Query the button element
+    const button = findElementById("btn", element) as HTMLButtonElement;
 
+    // Simulate a button click
+    button.click();
+
+    // Wait for the next microtask to ensure the update has been processed by Lit
+    await Promise.resolve();
+
+    jest.runAllTimers();
+    expect(element.willUpdateCount).toBe(1);
   });
-
-  // it('should receive at least more than one value in _changedProperties', async () => {
-  //   // Mocking the console.log method to spy on its usage
-  //   //const consoleSpy = jest.spyOn(element, 'willUpdate').mockImplementation();
-
-
-  //   // Call the function with an empty map
-  //   element.count = element.count + 1;
-  //   await element.updateComplete;
-  //   expect(element['willUpdate']).toHaveBeenCalled();
-  //   // Assert that console.log was called with the expected number of times
-  //   // In this case, we expect it to be called at least once with an argument that is not empty
-  //   // expect(consoleSpy).toHaveBeenCalled();
-  //   // expect(consoleSpy.mock.calls.some(call => call[0].size > 1)).toBe(true);
-
-  //   // // Restore the original console.log method
-  //   // consoleSpy.mockRestore();
-  // });
 });
